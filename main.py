@@ -1,5 +1,7 @@
 from Canny import *
 import time
+from distance_map import *
+from monochrome import *
 
 def immse(img1, img2):
     img_width, img_height, img_channel = img1.shape
@@ -39,5 +41,22 @@ def TestCanny():
     print (f'mse: {mse} ~ {percent} %')
     cv2.waitKey(0)
 
+def test_distance_map():
+    img = cv2.imread('images/sp.jpg')
+    gray_img = monochrome(img)
+    _, bin_image = cv2.threshold(gray_img, 100, 255, cv2.THRESH_BINARY)
+
+    time1 = cv2.getTickCount()
+    final_image = distance_map(bin_image)
+    time2 = cv2.getTickCount()
+    time = (time2 - time1) / cv2.getTickFrequency()
+
+
+    print('Time = ' + str(time) + '\n')
+    cv2.imshow('Distance map', final_image)
+    
+    cv2.waitKey(0)
+
 if __name__ == '__main__':
-    TestCanny()
+    #TestCanny()
+    test_distance_map()
